@@ -2,3 +2,4 @@
 dev/back/*
 dev/front/*
 infra/mysql/db/*
+.env
