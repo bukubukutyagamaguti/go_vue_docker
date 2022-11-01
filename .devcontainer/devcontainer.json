@@ -1,0 +1,28 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/docker-existing-docker-compose
+// If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
+{
+	"name": "dev-container", // コンテナ表示名
+	"dockerComposeFile": [
+		"../docker-compose.yml" // Docker Composeのファイルパス
+	],
+	"service": "api", // Docker Composeの接続サービス名
+	"workspaceFolder": "/app", // Workspaceのフォルダを指定
+	"extensions": [ // コンテナ内でインストールするVS Codeの拡張機能ID
+		"766b.go-outliner",
+		"bmewburn.vscode-intelephense-client",
+		"golang.go",
+		"ionutvmi.path-autocomplete",
+		"mhutchie.git-graph",
+		"MS-CEINTL.vscode-language-pack-ja",
+		"octref.vetur",
+		"oderwat.indent-rainbow",
+		"sdras.night-owl",
+		"streetsidesoftware.code-spell-checker",
+		"vincaslt.highlight-matching-tag",
+		"vscode-icons-team.vscode-icons",
+		"Vue.volar",
+	],
+	"settings": { // コンテナ内に追加するVS Codeの設定
+	}
+}

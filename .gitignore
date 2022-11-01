@@ -1,0 +1,6 @@
+!.gitkeep
+dev/back/*
+dev/front/*
+infra/mysql/db/*
+CleanArchitecture
+back

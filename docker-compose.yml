@@ -1,0 +1,66 @@
+version: "3"
+services:
+  api:
+    container_name: go_api
+    build:
+      context: .
+      dockerfile: ./infra/api/Dockerfile
+    tty: true
+    ports:
+      - ${IP_ADDRESS}:${API_PORT}:8080
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./dev/back
+        target: /app
+    working_dir: /app
+  client:
+    container_name: vue_client
+    build:
+      context: ./infra/client
+      dockerfile: Dockerfile
+    tty: true
+    depends_on:
+      - api
+    volumes:
+      - ./dev/front:/app
+    ports:
+      - ${IP_ADDRESS}:${FRONT_PORT}:8081
+    command: sh -c "cd /app && npm run dev"
+  web:
+    container_name: nginx_web
+    build: 
+      context: ./infra/nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+      - client
+    ports:
+      - ${IP_ADDRESS}:${WEB_PORT}:80
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf
+  db:
+    container_name: db_mysql
+    build:
+      context: ./infra/mysql
+      dockerfile: Dockerfile
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - ${IP_ADDRESS}:${DB_PORT}:3306
+    volumes:
+      - type: bind
+        source: ./infra/mysql/init
+        target: /docker-entrypoint-initdb.d
+      - type: bind
+        source: ./infra/mysql/db
+        target: /var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
